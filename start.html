@@ -55,23 +55,23 @@
         endingCity: ''
       },
       watch: {
-        startingZip: function(){
+        startingZip: _.debounce(function(){
           this.startingCity = ''
           if (this.startingZip.length == 5){
             //call API method
             this.lookupStartingZip()
           }
-        },
-        endingZip: function(){
+        }, 500),
+        endingZip: _.debounce(function(){
           this.endingCity = ''
           if (this.endingZip.length == 5){
             //call API method
             this.lookupEndingZip()
           }         
-        }
+        }, 500)
       },
       methods: {
-        lookupStartingZip: _.debounce(function() {
+        lookupStartingZip: function() {
           var app = this
           this.startingCity = "Searching..."
           axios.get('http://ziptasticapi.com/' + app.startingZip)
@@ -81,8 +81,8 @@
                .catch(function (error){
                  app.startingCity = "Invalid Zipcode"
                })
-        }, 500),
-        lookupEndingZip: _.debounce(function() {
+        },
+        lookupEndingZip: function() {
           var app = this
           this.endingCity = "Searching..."
           axios.get('http://ziptasticapi.com/' + app.endingZip)
@@ -92,7 +92,7 @@
                .catch(function (error){
                  app.endingCity = "Invalid Zipcode"
                })
-        }, 500)
+        }
       }
     })
   </script>
